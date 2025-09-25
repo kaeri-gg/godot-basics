@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bic82vquyxxsc"]
 
-[ext_resource type="Texture2D" uid="uid://dlrymqfsta5j4" path="res://brackeys_platformer_assets/sprites/world_tileset.png" id="1_2urvg"]
+[ext_resource type="Texture2D" uid="uid://dlrymqfsta5j4" path="res://assets/brackeys_platformer_assets/sprites/world_tileset.png" id="1_2urvg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_feb5d"]
 texture = ExtResource("1_2urvg")
