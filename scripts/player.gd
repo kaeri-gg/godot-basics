@@ -12,6 +12,9 @@ var can_dash: bool = true
 
 var jumps: int = _get_default_jumps()
 
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+
+
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -21,9 +24,8 @@ func _physics_process(delta: float) -> void:
 		_reset_jumps()
 
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and jumps > 0:
-		velocity.y = JUMP_VELOCITY
-		jumps -= 1
+	if Input.is_action_just_pressed("jump") and jumps > 0:
+		jump()
 		
 	if Input.is_action_just_pressed("dash") and can_dash:
 		dashing = true
@@ -31,9 +33,27 @@ func _physics_process(delta: float) -> void:
 		dash_timer.start()
 		dash_again_timer.start()
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
+
+	# Get the input direction: -1, 0, 1
+	var direction := Input.get_axis("move_left", "move_right")
+	
+	# Flip the sprite
+	if direction > 0:
+		animated_sprite.flip_h = false
+	elif direction < 0:
+		animated_sprite.flip_h = true
+	
+	# Play animations
+	if is_on_floor():
+		if direction == 0:
+			animated_sprite.play("idle")
+		else: 
+			animated_sprite.play("run")
+	else: 
+		animated_sprite.play("jump")
+	
+	
+	
 	if direction:
 		if dashing:
 			velocity.x = direction * DASH_SPEED
@@ -56,3 +76,7 @@ func _get_default_jumps() -> int:
 
 func _reset_jumps() -> void:
 	jumps = _get_default_jumps()
+
+func jump() -> void:
+	velocity.y = JUMP_VELOCITY
+	jumps -= 1
