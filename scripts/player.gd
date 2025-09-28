@@ -1,7 +1,11 @@
 extends CharacterBody2D
 
+const GameManager = preload("res://scripts/game_manager.gd")
+
+@onready var game_manager : GameManager = %GameManager
 @onready var dash_timer: Timer = $dash_timer
 @onready var dash_again_timer: Timer = $dash_again_timer
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 const SPEED = 100.0
 const DASH_SPEED = 900.0
@@ -9,11 +13,7 @@ const JUMP_VELOCITY = -250.0
 
 var dashing: bool = false
 var can_dash: bool = true
-
 var jumps: int = _get_default_jumps()
-
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -21,6 +21,7 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 		
 	if is_on_floor():
+		game_manager.save_checkpoint(self.position)
 		_reset_jumps()
 
 	# Handle jump.
@@ -51,7 +52,6 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("run")
 	else: 
 		animated_sprite.play("jump")
-	
 	
 	
 	if direction:
