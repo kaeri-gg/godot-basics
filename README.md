@@ -58,28 +58,115 @@ License: **Creative Commons Zero (CC0)**
 All listed assets are under **CC0** license.  
 Free to use, modify, and distribute.
 
-## GitHub Deployment
+## 🌐 GitHub Pages Deployment
 
-Certain things require manual intervention.
+This project is configured for automatic deployment to GitHub Pages. Here's everything you need to know:
 
-After re-exporting, check that your new index.html contains:
+### 🚀 **Play the Game Online**
+[**🎮 Play Now on GitHub Pages →**](https://your-username.github.io/godot-basics/)
 
-```ts
+### 📋 **Deployment Setup**
+
+**Prerequisites:**
+- Repository must be public (for free GitHub Pages)
+- GitHub Pages must be enabled in repository settings
+
+**Setup Steps:**
+1. Go to your repository **Settings** → **Pages**
+2. Set **Source** to "Deploy from a branch"
+3. Set **Branch** to `main` (root folder)
+4. The game will auto-deploy on every push to `main` branch
+
+### ⚙️ **Export Configuration (Important!)**
+
+For Godot web exports to work on GitHub Pages, specific settings are required:
+
+#### **In Godot Export Settings:**
+1. **Project** → **Export** → Select **"Web"** preset
+2. **Critical Settings** (must be disabled):
+   - ✅ **Thread Support**: `OFF`
+   - ✅ **Extensions Support**: `OFF`
+3. **Export** your game to `index.html`
+
+#### **Audio Bus Fix:**
+All `AudioStreamPlayer` nodes must use the default **Master** bus only.
+
+❌ **Remove these from .tscn files:**
+```
+bus = &"Music"
+bus = &"SFX"
+bus = &"Sound"
+```
+
+✅ **Use default bus (no bus line needed):**
+```
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_audio")
+autoplay = true
+```
+
+### 🔧 **Troubleshooting Common Errors**
+
+#### **Error: `SharedArrayBuffer transfer requires crossOriginIsolated`**
+**Cause:** Threading is enabled in export settings  
+**Fix:** Disable **Thread Support** in Godot export settings and re-export
+
+#### **Error: `invalid bus index "-1"`**
+**Cause:** Audio nodes reference non-existent audio buses  
+**Fix:** Remove all `bus = &"BusName"` lines from scene files
+
+#### **Error: `The following features required to run Godot projects on the Web are missing`**
+**Cause:** Cross-Origin Isolation headers missing  
+**Fix:** Ensure Thread Support is disabled (GitHub Pages doesn't support custom headers)
+
+### 📝 **Post-Export Verification**
+
+After exporting, verify your `index.html` contains:
+
+```javascript
 const GODOT_THREADS_ENABLED = false;
 ```
-```ts
-ensureCrossOriginIsolationHeaders: false
+```javascript
+"ensureCrossOriginIsolationHeaders": false
 ```
 
-If the error is show as below
-```text
-invalid bus index "-1"
+### 📁 **Required Files for Deployment**
+
+Ensure these files are in your repository root:
+- ✅ `index.html` (main game file)
+- ✅ `index.js` (game engine)
+- ✅ `index.wasm` (compiled game)
+- ✅ `index.pck` (game assets)
+- ✅ `index.icon.png` (favicon)
+- ✅ `index.png` (loading splash)
+- ✅ `.nojekyll` (disables Jekyll processing)
+- ✅ `.github/workflows/deploy.yml` (auto-deployment)
+
+### 🔄 **Automatic Deployment Workflow**
+
+The repository includes a GitHub Actions workflow that:
+1. **Triggers** on every push to `main` branch
+2. **Deploys** all files to GitHub Pages automatically
+3. **Updates** the live game within minutes
+
+**Manual deployment trigger:** Go to **Actions** tab → **Deploy to GitHub Pages** → **Run workflow**
+
+### 💡 **Development Tips**
+
+**Local Testing:**
+```bash
+# Serve locally to test before deployment
+python -m http.server 8000
+# or
+npx serve .
 ```
 
-It related to Audio export
+**Export Checklist:**
+- [ ] Thread Support disabled
+- [ ] Extensions Support disabled  
+- [ ] No custom audio buses used
+- [ ] All files exported to repository root
+- [ ] Local testing successful
+- [ ] Committed and pushed to main branch
 
-You need to make sure things prefixed with `bus = &` are removed
-
-Such as
-- `bus = &"Music"`
-- `bus = &"SFX"`
+**Deployment Status:** Check the **Actions** tab for deployment progress and any errors.
