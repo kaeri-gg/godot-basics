@@ -155,10 +155,12 @@ The repository includes a GitHub Actions workflow that:
 
 **Local Testing:**
 ```bash
-# Serve locally to test before deployment
-python -m http.server 8000
-# or
-npx serve .
+npx http-server --cert ~/cert.pem --key ~/key.pem --tls -o .
+```
+
+Run once if certs are not present (use gitHub bash)
+```bash
+openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
 ```
 
 **Export Checklist:**
