@@ -58,3 +58,9 @@ License: **Creative Commons Zero (CC0)**
 All listed assets are under **CC0** license.  
 Free to use, modify, and distribute.
 
+## Github Deployment
+After re-exporting, check that your new index.html contains:
+```GD
+const GODOT_THREADS_ENABLED = false;
+ensureCrossOriginIsolationHeaders": false
+```
