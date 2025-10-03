@@ -15,6 +15,10 @@ run/main_scene="uid://c8if4xfldqcb8"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://assets/icon.svg"
 
+[autoload]
+
+Music="*res://scenes/music.tscn"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=2
