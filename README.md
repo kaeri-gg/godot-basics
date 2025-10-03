@@ -58,9 +58,28 @@ License: **Creative Commons Zero (CC0)**
 All listed assets are under **CC0** license.  
 Free to use, modify, and distribute.
 
-## Github Deployment
+## GitHub Deployment
+
+Certain things require manual intervention.
+
 After re-exporting, check that your new index.html contains:
-```GD
+
+```ts
 const GODOT_THREADS_ENABLED = false;
-ensureCrossOriginIsolationHeaders": false
 ```
+```ts
+ensureCrossOriginIsolationHeaders: false
+```
+
+If the error is show as below
+```text
+invalid bus index "-1"
+```
+
+It related to Audio export
+
+You need to make sure things prefixed with `bus = &` are removed
+
+Such as
+- `bus = &"Music"`
+- `bus = &"SFX"`
