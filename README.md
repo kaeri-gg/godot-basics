@@ -1,5 +1,7 @@
 # Godot 2D Platformer (Learning Project)
 
+> [Play online](https://kaeri-gg.github.io/godot-basics/release/)
+
 This is my first **Godot Engine** project, created while learning in the  
 **Basics of Game Development** course for my **MSc in Digital Learning Games** at **Tallinn University (2025)**.  
 
